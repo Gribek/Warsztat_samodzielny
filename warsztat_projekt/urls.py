@@ -15,7 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
+from contact_box.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^$', show_all_contacts),
+    url(r'^new$', NewPerson.as_view()),
+    url(r'^modify/(?P<id>\d+)$', EditPerson.as_view()),
+    url(r'^delete/(?P<id>\d+)$', DeletePerson.as_view()),
+    url(r'^show/(?P<id>\d+)$', show_person),
+    url(r'^(?P<id>\d+)/addAddress$', AddAddress.as_view()),
+    url(r'^(?P<id>\d+)/addPhone$', AddPhoneNumber.as_view()),
+    url(r'^(?P<id>\d+)/addEmail$', AddEmail.as_view()),
+
 ]

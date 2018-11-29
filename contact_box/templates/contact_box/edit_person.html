@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj nową osobę</title>
+</head>
+<body>
+    <form method="post">
+        <div><label>Imię:<input type="text" name="name" placeholder="Podaj imię" value="{{ person.name }}"></label></div>
+        <div><label>Nazwisko:<input type="text" name="surname" placeholder="Podaj nazwisko" value="{{ person.surname }}"></label></div>
+        <div>Opis:</div>
+        <div><label><textarea name="description" rows="10" cols="50">{{ person.description }}</textarea></label></div>
+        <div><label><input type="submit" value="Zapisz zmiany"></label></div>
+        {% csrf_token %}
+    </form>
+    <form>
+        <button type="submit" formmethod="get" formaction="../{{ person.id }}/addAddress">Dodaj adres</button>
+    </form>
+    <form>
+        <button type="submit" formmethod="get" formaction="../{{ person.id }}/addPhone">Dodaj numer telefonu</button>
+    </form>
+    <form>
+        <button type="submit" formmethod="get" formaction="../{{ person.id }}/addEmail">Dodaj adres e-mail</button>
+    </form>
+</body>
+</html>

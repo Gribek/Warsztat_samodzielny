@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj adres e-mail</title>
+</head>
+<body>
+    <form method="post" action="">
+        <div><label>Adres e-mail:<input type="tel" name="email"></label></div>
+         <fieldset>
+            <legend>Rodzaj adresu</legend>
+             <label>prywatny
+                 <input type="radio" name="email_type" value="1">
+             </label>
+             <label>służbowy
+                 <input type="radio" name="email_type" value="2">
+             </label>
+             <label>inny
+                 <input type="radio" name="email_type" value="4">
+             </label>
+        </fieldset>
+        <label><input type="reset" value="Reset"></label>
+        <label><input type="submit" value="Dodaj adres"></label>
+        {% csrf_token %}
+    </form>
+</body>
+</html>

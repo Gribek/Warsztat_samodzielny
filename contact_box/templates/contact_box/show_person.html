@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dane osoby</title>
+</head>
+<body>
+    <h3>Dane osoby:</h3>
+    <div>Imię: {{ person.name }}</div>
+    <div>Nazwisko: {{  person.surname }}</div>
+    <div>Opis: {{ person.description }}</div>
+
+    <h4>Adres:</h4>
+    {% if person.address %}
+        <div>{{ person.address.city }}, {{ person.address.street }} {{ person.address.house_number }}/{{ person.address.apartment_number }}</div>
+    {% else %}
+        <div>Brak adresu</div>
+    {% endif %}
+
+    <h4>Telefon:</h4>
+    {% if phone_numbers %}
+       {% for phone in phone_numbers %}
+           {{ phone }}<br>
+       {% endfor %}
+    {% else %}
+        <div>Brak numerów telefonu</div>
+    {% endif %}
+
+    <h4>E-mail:</h4>
+    {% if email_addresses %}
+       {% for e_mail in email_addresses %}
+           {{ e_mail }}<br>
+       {% endfor %}
+    {% else %}
+        <div>Brak adresów e-mail</div>
+    {% endif %}
+
+    <p>
+         <form method="get">
+            <button formaction="/">Powrót do listy kontaktów</button>
+        </form>
+    </p>
+
+
+</body>
+</html>

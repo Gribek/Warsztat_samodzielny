@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista kontaktów</title>
+</head>
+<body>
+<form>
+    <h3>Twoja lista kontaktów</h3>
+    <ul>
+        {% for person in contacts %}
+            <li>
+                <a href="show/{{ person.id }}">{{ person.name }} {{ person.surname }}</a>
+                <button type="submit" formmethod="get" formaction="modify/{{ person.id }}">Edytuj dane</button>
+                <button type="submit" formmethod="get" formaction="delete/{{ person.id }}">Usuń kontakt</button>
+            </li>
+        {% endfor %}
+    </ul>
+<button type="submit" formmethod="get" formaction="new">Dodaj nowy kontakt</button>
+</form>
+</body>
+</html>

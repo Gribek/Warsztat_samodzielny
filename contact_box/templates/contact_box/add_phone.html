@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj numer telefonu</title>
+</head>
+<body>
+    <form method="post" action="">
+        <div><label>Numer telefonu:<input type="tel" name="phone_number"></label></div>
+         <fieldset>
+            <legend>Rodzaj numeru</legend>
+             <label>prywatny
+                 <input type="radio" name="phone_type" value="1">
+             </label>
+             <label>służbowy
+                 <input type="radio" name="phone_type" value="2">
+             </label>
+             <label>domowy
+                 <input type="radio" name="phone_type" value="3">
+             </label>
+             <label>inny
+                 <input type="radio" name="phone_type" value="4">
+             </label>
+        </fieldset>
+        <label><input type="reset" value="Reset"></label>
+        <label><input type="submit" value="Dodaj numer"></label>
+        {% csrf_token %}
+    </form>
+</body>
+</html>
