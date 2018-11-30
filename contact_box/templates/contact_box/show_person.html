@@ -36,8 +36,11 @@
     {% endif %}
 
     <p>
-         <form method="get">
-            <button formaction="/">Powrót do listy kontaktów</button>
+        <form>
+            <button formmethod="get" formaction="../modify/{{ person.id }}">Edytuj dane</button>
+        </form>
+         <form>
+            <button formmethod="get" formaction="/">Powrót do listy kontaktów</button>
         </form>
     </p>
 
