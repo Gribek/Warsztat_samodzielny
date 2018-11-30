@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dodaj nową osobę</title>
+    <title>Edytuj kontakt</title>
 </head>
+<h3>Edytujesz kontakt: {{ person.name }} {{ person.surname }}</h3>
 <body>
+    <h4>Dane osobowe</h4>
     <form method="post">
         <div><label>Imię:<input type="text" name="name" placeholder="Podaj imię" value="{{ person.name }}"></label></div>
         <div><label>Nazwisko:<input type="text" name="surname" placeholder="Podaj nazwisko" value="{{ person.surname }}"></label></div>
@@ -13,14 +15,92 @@
         <div><label><input type="submit" value="Zapisz zmiany"></label></div>
         {% csrf_token %}
     </form>
-    <form>
-        <button type="submit" formmethod="get" formaction="../{{ person.id }}/addAddress">Dodaj adres</button>
+    <h4>Adres</h4>
+    {% if person.address %}
+        <form action="/{{ person.id }}/addAddress">
+        <div><label>Miasto:<input type="text" name="city" value="{{ person.address.city }}"></label></div>
+        <div><label>Ulica:<input type="text" name="street" value="{{ person.address.street }}"></label></div>
+        <div><label>Nr domu:<input type="number" min="1" name="house_number" value="{{ person.address.house_number }}"></label></div>
+        <div><label>Nr mieszkania:<input type="number" min="1" name="apartment_number" value="{{ person.address.apartment_number }}"></label></div>
+            <label><input type="reset" value="Reset"></label>
+            <label><button type="submit" formmethod="post">Zapisz zmiany</button></label>
+            <label><button type="submit" formmethod="get">Usuń adres</button></label>
+        {% csrf_token %}
     </form>
-    <form>
-        <button type="submit" formmethod="get" formaction="../{{ person.id }}/addPhone">Dodaj numer telefonu</button>
+    {% else %}
+    <form method="post" action="/{{ person.id }}/addAddress">
+        <div><label>Miasto:<input type="text" name="city"></label></div>
+        <div><label>Ulica:<input type="text" name="street"></label></div>
+        <div><label>Nr domu:<input type="number" min="1" name="house_number"></label></div>
+        <div><label>Nr mieszkania:<input type="number" min="1" name="apartment_number"></label></div>
+        <label><input type="reset" value="Reset"></label>
+        <label><input type="submit" value="Dodaj nowy adres"></label>
+        {% csrf_token %}
     </form>
-    <form>
-        <button type="submit" formmethod="get" formaction="../{{ person.id }}/addEmail">Dodaj adres e-mail</button>
+    {% endif %}
+    <h4>Telefon</h4>
+    {% if phone_numbers %}
+       {% for phone in phone_numbers %}
+           {{ phone }} <form><button formmethod="get" formaction="/deletePhone/{{ phone.id }}">Usuń numer</button></form><br>
+       {% endfor %}
+    {% else %}
+        <div>Brak numerów telefonu</div>
+    {% endif %}
+    <br>
+     <form method="post" action="../{{ person.id }}/addPhone">
+        <fieldset>
+         <div><label>Numer telefonu:<input type="tel" name="phone_number"></label></div>
+            <legend>Dodaj nowy numer telefonu</legend>
+             <label>prywatny
+                 <input type="radio" name="phone_type" value="1">
+             </label>
+             <label>służbowy
+                 <input type="radio" name="phone_type" value="2">
+             </label>
+             <label>domowy
+                 <input type="radio" name="phone_type" value="3">
+             </label>
+             <label>inny
+                 <input type="radio" name="phone_type" value="4">
+             </label>
+            <label><input type="reset" value="Reset"></label>
+            <label><input type="submit" value="Dodaj"></label>
+        </fieldset>
+
+        {% csrf_token %}
     </form>
+    <h4>E-mail</h4>
+    {% if email_addresses %}
+       {% for e_mail in email_addresses %}
+           {{ e_mail }} <form><button formmethod="get" formaction="/deleteEmail/{{ e_mail.id }}">Usuń adres</button><br></form>
+       {% endfor %}
+    {% else %}
+        <div>Brak adresów e-mail</div>
+    {% endif %}
+    <br>
+    <form method="post" action="../{{ person.id }}/addEmail">
+        <fieldset>
+            <div><label>Adres e-mail:<input type="tel" name="email"></label></div>
+            <legend>Dodaj nowy adres e-mail</legend>
+             <label>prywatny
+                 <input type="radio" name="email_type" value="1">
+             </label>
+             <label>służbowy
+                 <input type="radio" name="email_type" value="2">
+             </label>
+             <label>inny
+                 <input type="radio" name="email_type" value="4">
+             </label>
+
+        <label><input type="reset" value="Reset"></label>
+        <label><input type="submit" value="Dodaj"></label>
+        </fieldset>
+        {% csrf_token %}
+    </form>
+    <p>
+        <form>
+            <button formmethod="get" formaction="/show/{{ person.id }}">Powrót do kontaktu</button>
+        </form>
+    </p>
 </body>
 </html>

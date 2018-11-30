@@ -22,7 +22,7 @@ def show_person(request, id):
     phone_numbers = person.phone_set.all()
     email_addresses = person.email_set.all()
     ctx = {
-       "person" : Person.objects.get(pk=id),
+       "person" : person,
         "phone_numbers" : phone_numbers,
         "email_addresses" : email_addresses,
     }
@@ -38,8 +38,13 @@ def show_all_contacts(request):
 
 class EditPerson(View):
     def get(self, request, id):
+        person = Person.objects.get(pk=id)
+        phone_numbers = person.phone_set.all()
+        email_addresses = person.email_set.all()
         ctx = {
-            "person" : Person.objects.get(pk=id)
+            "person": person,
+            "phone_numbers": phone_numbers,
+            "email_addresses": email_addresses,
         }
         return render(request, "contact_box/edit_person.html", ctx)
 
@@ -68,37 +73,98 @@ class DeletePerson(View):
 
 class AddAddress(View):
     def get(self, request, id):
-        return render(request, "contact_box/add_address.html")
+        person = Person.objects.get(pk=id)
+        adres_id = person.address.id
+        adres = Address.objects.get(pk=adres_id)
+        # person.address.person_set.remove(person)  # tak też zadziała :)
+        adres.person_set.remove(person)
+        return redirect("/modify/%s" % id)
 
     def post(self, request, id):
         city = request.POST.get("city")
         street = request.POST.get("street")
         house_number = request.POST.get("house_number")
         apartment_number = request.POST.get("apartment_number")
-        address = Address.objects.create(city=city, street=street, house_number=house_number, apartment_number=apartment_number)
-        person = Person.objects.get(pk=id)
-        person.address = address
-        person.save()
-        return redirect("/show/%s" % id)
+        if Address.objects.filter(city=city, street=street, house_number=house_number,
+                                         apartment_number=apartment_number).exists():
+            new_address = Address.objects.get(city=city, street=street, house_number=house_number,
+                                         apartment_number=apartment_number)
+            person = Person.objects.get(pk=id)
+            person.address = new_address
+            person.save()
+            return redirect("/show/%s" % id)
+        else:
+            new_address = Address.objects.create(city=city, street=street, house_number=house_number,
+                                             apartment_number=apartment_number)
+            person = Person.objects.get(pk=id)
+            person.address = new_address
+            person.save()
+            return redirect("/show/%s" % id)
 
 class AddPhoneNumber(View):
-    def get(self, request, id):
-        return render(request, "contact_box/add_phone.html")
+    # def get(self, request, id):
+    #     return render(request, "contact_box/add_phone.html")
 
     def post(self, request, id):
         phone_number = request.POST.get("phone_number")
         phone_type = request.POST.get("phone_type")
         person = Person.objects.get(pk=id)
         Phone.objects.create(phone_number=phone_number, phone_type=phone_type, person=person)
-        return redirect("/show/%s" % id)
+        return redirect("/modify/%s" % id)
 
 class AddEmail(View):
-    def get(self, request, id):
-        return render(request, "contact_box/add_email.html")
+    # def get(self, request, id):
+    #     return render(request, "contact_box/add_email.html")
 
     def post(self, request, id):
         email = request.POST.get("email")
         email_type = request.POST.get("email_type")
         person = Person.objects.get(pk=id)
         Email.objects.create(email=email, email_type=email_type, person=person)
-        return redirect("/show/%s" % id)
+        return redirect("/modify/%s" % id)
+
+class DeletePhone(View):
+    def get(self, request, id):
+        phone = Phone.objects.get(pk=id)
+        person_id = phone.person.id
+        phone.delete()
+        return redirect("/modify/%s" % person_id)
+
+class DeleteEmail(View):
+    def get(self, request, id):
+        e_mail = Email.objects.get(pk=id)
+        person_id = e_mail.person.id
+        e_mail.delete()
+        return redirect("/modify/%s" % person_id)
+
+
+# to moze byc nie potrzebne :)
+# class EditAddress(View):
+#     def get(self, request, id):
+#         person = Person.objects.get(pk=id)
+#         adres_id = person.address.id
+#         adres = Address.objects.get(pk=adres_id)
+#         adres.person_set.remove(person)
+#         return redirect("/modify/%s" % id)
+#
+#     def post(self, request, id):
+#         city = request.POST.get("city")
+#         street = request.POST.get("street")
+#         house_number = request.POST.get("house_number")
+#         apartment_number = request.POST.get("apartment_number")
+#         if Address.objects.filter(city=city, street=street, house_number=house_number,
+#                                          apartment_number=apartment_number).exists():
+#             new_address = Address.objects.get(city=city, street=street, house_number=house_number,
+#                                          apartment_number=apartment_number)
+#             person = Person.objects.get(pk=id)
+#             person.address = new_address
+#             person.save()
+#             return redirect("/show/%s" % id)
+#         else:
+#             new_address = Address.objects.create(city=city, street=street, house_number=house_number,
+#                                              apartment_number=apartment_number)
+#             person = Person.objects.get(pk=id)
+#             person.address = new_address
+#             person.save()
+#             return redirect("/show/%s" % id)
+#

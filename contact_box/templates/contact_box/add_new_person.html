@@ -13,5 +13,10 @@
         <div><label><input type="submit" value="Dodaj kontakt"></label></div>
         {% csrf_token %}
     </form>
+    <p>
+        <form>
+            <button formmethod="get" formaction="/">Anuluj</button>
+        </form>
+    </p>
 </body>
 </html>

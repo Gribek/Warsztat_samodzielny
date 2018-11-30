@@ -29,7 +29,10 @@ class Phone(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.phone_number}, numer {self.get_phone_type_display()}"
+        phone_type = ""
+        if self.phone_type:
+            phone_type += f", numer {self.get_phone_type_display()}"
+        return f"{self.phone_number} {phone_type}"
 
 class Email(models.Model):
     type = (
@@ -42,7 +45,10 @@ class Email(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.email}, e-mail {self.get_email_type_display()}"
+        email_type = ""
+        if self.email_type:
+            email_type += f", e-mail {self.get_email_type_display()}"
+        return f"{self.email} {email_type}"
 
 class Groups(models.Model):
     name = models.CharField(max_length=64)

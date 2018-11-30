@@ -28,5 +28,8 @@ urlpatterns = [
     url(r'^(?P<id>\d+)/addAddress$', AddAddress.as_view()),
     url(r'^(?P<id>\d+)/addPhone$', AddPhoneNumber.as_view()),
     url(r'^(?P<id>\d+)/addEmail$', AddEmail.as_view()),
+    url(r'^deletePhone/(?P<id>\d+)$', DeletePhone.as_view()),
+    url(r'^deleteEmail/(?P<id>\d+)$', DeleteEmail.as_view()),
+    # url(r'^editAddress/(?P<id>\d+)$', EditAddress.as_view()),
 
 ]
