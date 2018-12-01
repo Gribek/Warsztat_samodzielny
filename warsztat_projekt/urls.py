@@ -25,11 +25,13 @@ urlpatterns = [
     url(r'^modify/(?P<id>\d+)$', EditPerson.as_view()),
     url(r'^delete/(?P<id>\d+)$', DeletePerson.as_view()),
     url(r'^show/(?P<id>\d+)$', show_person),
+    url(r'^showGroup/(?P<group_id>\d+)$', show_group),
     url(r'^(?P<id>\d+)/addAddress$', AddAddress.as_view()),
     url(r'^(?P<id>\d+)/addPhone$', AddPhoneNumber.as_view()),
     url(r'^(?P<id>\d+)/addEmail$', AddEmail.as_view()),
     url(r'^deletePhone/(?P<id>\d+)$', DeletePhone.as_view()),
     url(r'^deleteEmail/(?P<id>\d+)$', DeleteEmail.as_view()),
-    # url(r'^editAddress/(?P<id>\d+)$', EditAddress.as_view()),
+    url(r'^addGroup$', AddGroup.as_view()),
+    url(r'^AddGroupMember/(?P<group_id>\d+)$', AddGroupMember.as_view())
 
 ]

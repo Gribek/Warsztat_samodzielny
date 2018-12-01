@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ group.name }}</title>
+</head>
+<body>
+    <h2>{{ group.name }}</h2>
+    {% if members %}
+    <ul>
+        {% for member in members %}
+            <li>{{ member.name }} {{ member.surname }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        Brak osób należących do tej grupy
+    {% endif %}
+    <p>
+        <form><button formmethod="get" formaction="/AddGroupMember/{{ group.id }}">Dodaj nową osobę</button></form>
+    </p>
+    <p>
+        <form><button formmethod="get" formaction="/">Powrót do listy kontaktów</button></form>
+    </p>
+</body>
+</html>

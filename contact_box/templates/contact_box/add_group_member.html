@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj osobę do grupy</title>
+</head>
+<body>
+    <form method="post">
+        <h4>Dodaj nową osobę do grupy {{ group.name }}</h4>
+        <label><select name="person">
+            {% for person in contacts %}
+                <option value="{{ person.id }}">{{ person.name }} {{ person.surname }}</option>
+            {% endfor %}
+        </select></label>
+        <label><input type="submit" value="Dodaj osobę"></label>
+        {% csrf_token %}
+    </form>
+    <br>
+    <p><u>Osoby należące do grupy {{ group.name }}:</u></p>
+    {% if members %}
+    <ul>
+        {% for member in members %}
+            <li>{{ member.name }} {{ member.surname }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        Brak osób należących do tej grupy
+    {% endif %}
+    <p>
+        <form>
+            <button formaction="/showGroup/{{ group.id }}">Powrót</button>
+        </form>
+    </p>
+</body>
+</html>

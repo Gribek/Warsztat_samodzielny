@@ -22,16 +22,17 @@ def show_person(request, id):
     phone_numbers = person.phone_set.all()
     email_addresses = person.email_set.all()
     ctx = {
-       "person" : person,
-        "phone_numbers" : phone_numbers,
-        "email_addresses" : email_addresses,
+       "person": person,
+        "phone_numbers": phone_numbers,
+        "email_addresses": email_addresses,
     }
     return render(request, "contact_box/show_person.html", ctx)
 
 
 def show_all_contacts(request):
     ctx = {
-        "contacts" : Person.objects.all().order_by("name", "surname")
+        "contacts" : Person.objects.all().order_by("name", "surname"),
+        "groups" : Groups.objects.all().order_by("name")
     }
     return render(request, "contact_box/show_all_contacts.html", ctx)
 
@@ -72,7 +73,7 @@ class DeletePerson(View):
 
 
 class AddAddress(View):
-    def get(self, request, id):
+    def get(self, request, id):  # usunięcie adresu danej osoby (usuwa relacje)
         person = Person.objects.get(pk=id)
         adres_id = person.address.id
         adres = Address.objects.get(pk=adres_id)
@@ -80,7 +81,7 @@ class AddAddress(View):
         adres.person_set.remove(person)
         return redirect("/modify/%s" % id)
 
-    def post(self, request, id):
+    def post(self, request, id):  # obsługuje dodanwanie nowego adresu i modyfikację obecnego
         city = request.POST.get("city")
         street = request.POST.get("street")
         house_number = request.POST.get("house_number")
@@ -102,8 +103,6 @@ class AddAddress(View):
             return redirect("/show/%s" % id)
 
 class AddPhoneNumber(View):
-    # def get(self, request, id):
-    #     return render(request, "contact_box/add_phone.html")
 
     def post(self, request, id):
         phone_number = request.POST.get("phone_number")
@@ -113,8 +112,6 @@ class AddPhoneNumber(View):
         return redirect("/modify/%s" % id)
 
 class AddEmail(View):
-    # def get(self, request, id):
-    #     return render(request, "contact_box/add_email.html")
 
     def post(self, request, id):
         email = request.POST.get("email")
@@ -137,34 +134,39 @@ class DeleteEmail(View):
         e_mail.delete()
         return redirect("/modify/%s" % person_id)
 
+class AddGroup(View):
+    def get(self, request):
+        return render(request, "contact_box/add_group.html")
 
-# to moze byc nie potrzebne :)
-# class EditAddress(View):
-#     def get(self, request, id):
-#         person = Person.objects.get(pk=id)
-#         adres_id = person.address.id
-#         adres = Address.objects.get(pk=adres_id)
-#         adres.person_set.remove(person)
-#         return redirect("/modify/%s" % id)
-#
-#     def post(self, request, id):
-#         city = request.POST.get("city")
-#         street = request.POST.get("street")
-#         house_number = request.POST.get("house_number")
-#         apartment_number = request.POST.get("apartment_number")
-#         if Address.objects.filter(city=city, street=street, house_number=house_number,
-#                                          apartment_number=apartment_number).exists():
-#             new_address = Address.objects.get(city=city, street=street, house_number=house_number,
-#                                          apartment_number=apartment_number)
-#             person = Person.objects.get(pk=id)
-#             person.address = new_address
-#             person.save()
-#             return redirect("/show/%s" % id)
-#         else:
-#             new_address = Address.objects.create(city=city, street=street, house_number=house_number,
-#                                              apartment_number=apartment_number)
-#             person = Person.objects.get(pk=id)
-#             person.address = new_address
-#             person.save()
-#             return redirect("/show/%s" % id)
-#
+    def post(self, request):
+        name = request.POST.get("name")
+        group = Groups.objects.create(name=name)
+        group_id = group.id
+        return redirect("/AddGroupMember/%s" % group_id)
+
+
+class AddGroupMember(View):
+    def get(self, request, group_id):
+        group = Groups.objects.get(pk=group_id)
+        ctx = {'contacts': Person.objects.all(),
+               'group': group,
+               'members': group.person.all().order_by("name", "surname"),
+               }
+        return render(request, "contact_box/add_group_member.html", ctx)
+
+    def post(self, request, group_id):
+        group = Groups.objects.get(pk=group_id)
+        ctx = {'contacts': Person.objects.all(),
+               'group': group,
+               'members': group.person.all().order_by("name", "surname"),
+               }
+        member = Person.objects.get(pk=request.POST.get('person'))
+        group.person.add(member)
+        return render(request, "contact_box/add_group_member.html", ctx)
+
+def show_group(request, group_id):
+    group = Groups.objects.get(pk=group_id)
+    ctx = {"group": group,
+           'members': group.person.all().order_by("name", "surname")
+           }
+    return render(request, "contact_box/show_group.html", ctx)

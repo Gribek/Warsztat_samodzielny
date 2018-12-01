@@ -17,6 +17,17 @@
         {% endfor %}
     </ul>
 <button formmethod="get" formaction="new">Dodaj nowy kontakt</button>
+    <h4>Twoje grupy</h4>
+    <ul>
+        {% for group in groups %}
+            <li>
+                <a href="showGroup/{{ group.id }}">{{ group.name }}</a>
+            </li>
+        {%  endfor %}
+    </ul>
+
+
+<button formmethod="get" formaction="addGroup">Dodaj nową grupę</button>
 </form>
 </body>
 </html>
