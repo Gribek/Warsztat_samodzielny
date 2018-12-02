@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^deletePhone/(?P<id>\d+)$', DeletePhone.as_view()),
     url(r'^deleteEmail/(?P<id>\d+)$', DeleteEmail.as_view()),
     url(r'^addGroup$', AddGroup.as_view()),
-    url(r'^AddGroupMember/(?P<group_id>\d+)$', AddGroupMember.as_view())
+    url(r'^AddGroupMember/(?P<group_id>\d+)$', AddGroupMember.as_view()),
+    url(r'^showGroup/group_search/(?P<group_id>\d+)$', GroupSearch.as_view()),
 
 ]

@@ -48,7 +48,7 @@
     {% endif %}
     <br>
      <form method="post" action="../{{ person.id }}/addPhone">
-        <fieldset>
+        <fieldset style="width: 600px;">
          <div><label>Numer telefonu:<input type="tel" name="phone_number"></label></div>
             <legend>Dodaj nowy numer telefonu</legend>
              <label>prywatny
@@ -79,7 +79,7 @@
     {% endif %}
     <br>
     <form method="post" action="../{{ person.id }}/addEmail">
-        <fieldset>
+        <fieldset style="width: 600px;">
             <div><label>Adres e-mail:<input type="tel" name="email"></label></div>
             <legend>Dodaj nowy adres e-mail</legend>
              <label>prywatny
@@ -89,7 +89,7 @@
                  <input type="radio" name="email_type" value="2">
              </label>
              <label>inny
-                 <input type="radio" name="email_type" value="4">
+                 <input type="radio" name="email_type" value="3">
              </label>
 
         <label><input type="reset" value="Reset"></label>

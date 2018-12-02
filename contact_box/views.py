@@ -170,3 +170,16 @@ def show_group(request, group_id):
            'members': group.person.all().order_by("name", "surname")
            }
     return render(request, "contact_box/show_group.html", ctx)
+
+class GroupSearch(View):
+    def post(self, request, group_id):
+        group =  Groups.objects.get(pk=group_id)
+        phrase = request.POST.get("phrase")
+        if request.POST.get("search") == "name":
+            result = group.person.filter(name=phrase)
+        else:
+            result = group.person.filter(surname=phrase)
+        ctx = {"result": result,
+               "group_id": group_id,
+               }
+        return render(request, "contact_box/group_search.html", ctx)

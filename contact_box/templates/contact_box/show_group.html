@@ -17,9 +17,10 @@
     {% endif %}
     <p>
         <form><button formmethod="get" formaction="/AddGroupMember/{{ group.id }}">Dodaj nową osobę</button></form>
-    </p>
+        <form><button formmethod="post" formaction="group_search/{{ group.id }}">Szukaj osoby</button>{% csrf_token %}</form>
     <p>
         <form><button formmethod="get" formaction="/">Powrót do listy kontaktów</button></form>
-    </p>
+
+
 </body>
 </html>
